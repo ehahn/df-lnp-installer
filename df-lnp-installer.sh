@@ -51,7 +51,7 @@ build_dwarf_therapist () {
   local DWARF_THERAPIST_HG_DIR="$DOWNLOAD_DIR/dwarftherapist"
   
   # Create the makefile.
-  $(find_qmake_qt4) "$DWARF_THERAPIST_HG_DIR" -o "$DWARF_THERAPIST_HG_DIR/Makefile"
+  $(find_qmake_qt5) "$DWARF_THERAPIST_HG_DIR" -o "$DWARF_THERAPIST_HG_DIR/Makefile"
   
   # Quit if qmake failed.
   if [ "$?" != "0" ]; then
@@ -85,9 +85,9 @@ bugfix_all () {
   fix_vanilla_df_lnp_settings_not_applied_by_default
 }
 
-find_qmake_qt4 () {
-  for name in "qmake" "qmake-qt4"; do
-	if [ -n "$(which $name)" ] && [ $($name -query QT_VERSION | cut -d . -f 1) -eq 4 ]; then
+find_qmake_qt5 () {
+  for name in "qmake" "qmake-qt5"; do
+	if [ -n "$(which $name)" ] && [ $($name -query QT_VERSION | cut -d . -f 1) -eq 5 ]; then
 		echo $name
 		break
 	fi
@@ -150,8 +150,8 @@ check_dependencies () {
   fi
 
   # qmake (required for DwarfTherapist)
-  if [ -z "$(find_qmake_qt4)" ]; then
-	MISSING_DEPS="${MISSING_DEPS}qmake_qt4 "
+  if [ -z "$(find_qmake_qt5)" ]; then
+	MISSING_DEPS="${MISSING_DEPS}qmake_qt5 "
   fi
   
   # make (required for DwarfTherapist)
@@ -170,19 +170,19 @@ check_dependencies () {
   fi
   
   # Check for QT Libraries (required for Dwarf Therapist)
-  if [ -z "$(/sbin/ldconfig -p | grep -P '^\tlibQtCore.so\s')" ]; then
+  if [ -z "$(/sbin/ldconfig -p | grep -P '^\tlibQt5Core.so.5\s')" ]; then
 	MISSING_DEPS="${MISSING_DEPS}libQtCore "
   fi
   
-  if [ -z "$(/sbin/ldconfig -p | grep -P '^\tlibQtGui.so\s')" ]; then
+  if [ -z "$(/sbin/ldconfig -p | grep -P '^\tlibQt5Gui.so.5\s')" ]; then
 	MISSING_DEPS="${MISSING_DEPS}libQtGui "
   fi
   
-  if [ -z "$(/sbin/ldconfig -p | grep -P '^\tlibQtNetwork.so\s')" ]; then
+  if [ -z "$(/sbin/ldconfig -p | grep -P '^\tlibQt5Network.so.5\s')" ]; then
 	MISSING_DEPS="${MISSING_DEPS}libQtNetwork "
   fi
   
-  if [ -z "$(/sbin/ldconfig -p | grep -P '^\tlibQtScript.so\s')" ]; then
+  if [ -z "$(/sbin/ldconfig -p | grep -P '^\tlibQt5Script.so.5\s')" ]; then
 	MISSING_DEPS="${MISSING_DEPS}libQtScript "
   fi
   
